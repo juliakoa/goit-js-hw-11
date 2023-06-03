@@ -1,5 +1,7 @@
 import axios from 'axios';
 import Notiflix from 'notiflix';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const searchForm = document.getElementById('search-form');
 const gallery = document.querySelector('.gallery');
@@ -11,6 +13,10 @@ let currentSearchQuery = '';
 function createPhotoCard(photo) {
   const photoCard = document.createElement('div');
   photoCard.classList.add('photo-card');
+
+  const link = document.createElement('a');
+  link.href = photo.largeImageURL;
+  link.setAttribute('data-lightbox', 'gallery');
 
   const img = document.createElement('img');
   img.src = photo.webformatURL;
@@ -41,8 +47,9 @@ function createPhotoCard(photo) {
   info.appendChild(comments);
   info.appendChild(downloads);
 
-  photoCard.appendChild(img);
+  photoCard.appendChild(link);
   photoCard.appendChild(info);
+  link.appendChild(img);
 
   return photoCard;
 }
@@ -84,6 +91,11 @@ async function searchImages(searchQuery, page) {
         );
       }
     }
+    const lightBoxImplementation = new SimpleLightbox('.photo-card a', {
+      captionsData: 'alt',
+      captionsDelay: '250',
+    });
+    lightBoxImplementation.refresh();
   } catch (error) {
     Notiflix.Notify.failure('Oops! Something went wrong. Please try again.');
   }
