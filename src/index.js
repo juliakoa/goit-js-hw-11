@@ -75,6 +75,7 @@ async function searchImages(searchQuery, page) {
     const totalHits = data.totalHits;
 
     if (photos.length === 0) {
+      loadMoreButton.style.display = 'none';
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
